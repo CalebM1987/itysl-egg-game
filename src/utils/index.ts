@@ -1,10 +1,8 @@
 export { log } from './logger'
+import { LocalStorageDevOverrides } from '@/types';
 
-export const toTitleCase = (s: string)=> s.split(' ').map(function(word) {
-    return word.charAt(0).toUpperCase() + word.substring(1, word.length);
-  })
-  .join(' ')
-
+/** predictable random number generator */
+export const randomNumber = (min=1, max=25) => Math.floor(Math.random() * (max - min + 1)) + min
 
   /**
  * creates a "sleep" function, will wait a user specified amount of milliseconds
@@ -50,57 +48,13 @@ export const speak = (message: string, voice?: SpeechSynthesisVoice | string) =>
   speechSynthesis.speak(msg)
 }
 
-export const randomNumber = (min=1, max=25) => Math.floor(Math.random() * (max - min + 1)) + min
-
 /**
- * Creates a range Array.
- *
- * @description Creates a range Array.
- *
- * since    1.0.0
- *
- * @function range
- *
- * @param {number} start - start number, or if only one number supplied, it will be the size of range Array using a default step of 1.
- * @param {number} end - end number limit for range, non inclusive.
- * @param {number} [step=1] - step interval for the range. Default is 1.
- *
- * @example
- * // pass in one number, returns [0, 1, 2, 3, 4]
- * const rng = range(5);
- *
- * // pass in two numbers, returns [4, 5, 6, 7, 8, 9]
- * const rng = range(4, 10);
- *
- * // pass in all three arguments, returns [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
- * const rng = range(0, 50, 5);
- *
- * @return {number[]} a range Array.
- *
+ * read animation duration from gif as Unit8Array
+ * https://stackoverflow.com/a/74236879/3005089
+ * @param uint8 
+ * @returns 
  */
-export function range(start: number, end?: number, step = 1): number[] {
-  if (start){
-    if (!end){
-      // if only one argument was given, make this end of range
-      end = start
-      start = 0
-    }
-  }
-
-  // validate 
-  end = end || start + 1
-  step = step || 1
-  if (end <= start){
-    end += 1
-  }
-
-  return Array(Math.ceil((end - start) / step))
-    .fill(0)
-    .map((v, i) => start + i * step);
-}
-
-export /** @param {Uint8Array} uint8 */
-function getGifAnimationDuration (uint8: Uint8Array) {
+export function getGifAnimationDuration (uint8: Uint8Array) {
   let duration = 0
   for (let i = 0, len = uint8.length; i < len; i++) {
     if (uint8[i] == 0x21
@@ -115,8 +69,35 @@ function getGifAnimationDuration (uint8: Uint8Array) {
   return duration / 100
 }
 
+/**
+ * reads the duration of a gif from a given url
+ * @param url 
+ * @returns 
+ */
 export async function gifAnimationDuration(url: string){
   const resp = await fetch(url)
   const buff = await resp.arrayBuffer()
   return getGifAnimationDuration(new Uint8Array(buff))
+}
+
+/**
+ * allow developers to override random range to win quicker
+ * run this in console:
+ * @example localStorage.setItem('egg-game', JSON.stringify({"min":5, "max": 10}))
+ * @returns 
+ */
+export function checkForDevSettings(): LocalStorageDevOverrides {
+  const key = 'egg-game'
+  const item = localStorage.getItem(key) ?? '{}'
+  const overrides: LocalStorageDevOverrides = {
+    min: 35,
+    max: 91
+  }
+  try {
+    const parsed = JSON.parse(item)
+    Object.assign(overrides, parsed)
+  } catch(err){
+    // who cares
+  }
+  return overrides
 }
