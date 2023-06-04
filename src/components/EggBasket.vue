@@ -2,15 +2,16 @@
 import { ref } from 'vue'
 
 const emit = defineEmits<{
-  dragEgg: [];
-  cancelDrag: [];
+  'drag-egg': [];
+  'cancel-drag': [];
 }>()
 
 interface Props {
-  showEggDrag: boolean;
+  eggCount: number;
+  disabled?: boolean;
 }
 
-const { showEggDrag=false } = defineProps<Props>()
+const { disabled = false } = defineProps<Props>()
 
 const dragElm = ref<HTMLDivElement | null>(null)
 
@@ -20,15 +21,16 @@ const img = new Image(48, 48)
 img.src = singleEgg
 
 const onDragStart = (evt: DragEvent)=> {
-  console.log('drag start??', evt)
   if (!evt) return
+  if (disabled){
+    evt.preventDefault()
+  }
   evt?.dataTransfer?.setDragImage(img, 20, 60)
-  emit('dragEgg')
+  emit('drag-egg')
 }
 
-const onDragEnd = (evt: DragEvent) => {
-  console.log('drag end from basket?', evt)
-  emit('cancelDrag')
+const onDragEnd = () => {
+  emit('cancel-drag')
 }
 
 const basketImage = new URL('../assets/images/Basket.png', import.meta.url).href
@@ -38,6 +40,7 @@ const basketImage = new URL('../assets/images/Basket.png', import.meta.url).href
   <div class="egg-basket-wrapper">
     <img :src="basketImage" alt="" class="egg-basket">
     <div 
+      :disabled="disabled"
       id="egg-basket"
       ref="dragElm"
       draggable="true"
@@ -47,12 +50,19 @@ const basketImage = new URL('../assets/images/Basket.png', import.meta.url).href
       @drop="onDragEnd"
     >
       <div class="draggable-egg"></div>
+      <p class="eggs-count" v-if="eggCount">EGGS: {{ eggCount }}</p>
     </div>
   </div>
 </template>
 
 <style>
+  .eggs-count {
+    margin-top: 0.5rem;
+  }
   .transparent {
     opacity: 1;
+  }
+  .draggable-container, .draggable-container:active, .draggable-egg, .draggable-egg:active {
+    cursor: url('./Tiny-Cursor.png'), pointer !important;
   }
 </style>
