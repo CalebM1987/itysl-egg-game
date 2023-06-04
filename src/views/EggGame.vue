@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent } from 'vue'
 import { useEggs } from '@/composables/eggs';
 import { usePopups } from '@/composables/popup'
 import { randomNumber, speak, delay, log } from '@/utils';
+import { eggs } from '@/utils/easter-eggs'
 import EggGuy from '@/components/EggGuy.vue';
 import EggBasket from '@/components/EggBasket.vue';
 const Popup = defineAsyncComponent(()=> import('@/components/Popup.vue'));
@@ -103,6 +104,14 @@ const onEatEgg = ()=> {
       }
     }
   }, 1000)
+}
+
+// easter eggs
+if (localStorage.getItem('debug')){
+  eggs.doTheVoice = displayPopup
+  eggs.showEmNude = ()=> isWinner.value = true
+  // @ts-ignore
+  window.eggs = eggs
 }
 </script>
 
