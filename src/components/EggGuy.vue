@@ -44,8 +44,7 @@ const imageSource = computed(()=> celebrate
   : new URL(`../assets/images/${mouthState.value}-Mouth-Egg-${legState}.png`, import.meta.url).href
 )
 
-const onDrop = (evt: any)=> {
-  log('dropped egg: ', evt)
+const onDrop = ()=> {
   emit('drop-egg')
 }
 
@@ -113,9 +112,3 @@ onMounted(()=> {
     </div>
   </div>
 </template>
-
-<style>
-.egg-guy-img-wrapper:hover {
-  cursor: url('./Tiny-Cursor.png'), pointer !important;
-}
-</style>

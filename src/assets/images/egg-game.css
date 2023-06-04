@@ -4,7 +4,7 @@
 }
 
 body {
-  cursor: url(/Tiny-Cursor.png), auto;
+  cursor: url('./assets/images/Tiny-Cursor.png'), auto;
   max-height: 100svh;
   height: 100svh;
   width: 100vw;

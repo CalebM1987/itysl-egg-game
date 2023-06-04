@@ -62,7 +62,7 @@ const basketImage = new URL('../assets/images/Basket.png', import.meta.url).href
   .transparent {
     opacity: 1;
   }
-  .draggable-container, .draggable-container:active, .draggable-egg, .draggable-egg:active {
-    cursor: url('./Tiny-Cursor.png'), pointer !important;
-  }
+  /* .draggable-container, .draggable-container:active, .draggable-egg, .draggable-egg:active {
+    cursor: url('./assets/images/Tiny-Cursor.png'), pointer !important;
+  } */
 </style>

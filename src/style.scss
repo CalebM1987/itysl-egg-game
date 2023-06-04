@@ -1,10 +1,10 @@
 @font-face {
   font-family: egg-font;
-  src: local("egg-font"), url('./egg-font.ttf') format("truetype");
+  src: local("egg-font"), url('./assets/fonts/egg-font.ttf') format("truetype");
 }
 
 body {
-  cursor: url('/Tiny-Cursor.png'), pointer !important;
+  cursor: url('./assets/images/Tiny-Cursor.png'), pointer !important;
   max-height: 100vh;
   height: 100vh;
   width: 100vw;

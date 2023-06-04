@@ -80,7 +80,7 @@ const onEatEgg = ()=> {
         log('that one egg was 40 eggs!?')
       // } else if (eggCounter.value === 39){
         // make it more interesting to not automatically win at 39 eggs
-      } else if (randomNumber(1,6) === 2 || eggCounter.value === 0){
+      } else if (randomNumber(1,6) === 2 || eggCounter.value === 1){
         // win game
         disableFeed.value = true
         await displayPopup('41 EGGS')
@@ -99,8 +99,7 @@ const onEatEgg = ()=> {
     } else if (totalEggs.value >= 10){
       disableFeed.value = false
       if (randomNumber(1, 6) === 3){
-        currentMessage.value = `${randomNumber(2, 10)} EGGS`
-        showPopup.value = true
+        displayPopup(`${randomNumber(2, 10)} EGGS`)
       }
     }
   }, 1000)
