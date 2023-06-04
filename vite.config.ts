@@ -6,7 +6,7 @@ import path from 'path'
 export default defineConfig({
   base: './',
   build: {
-    outDir: 'docs'
+    outDir: 'app'
   },
   plugins: [
     vue({
