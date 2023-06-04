@@ -40,14 +40,16 @@ const {
 const resetGame = ()=> {
   isWinner.value = false
   eggCounter.value = 0
-  eggCounter.value = 0
+  isOutOfEggs.value = false
   disableFeed.value = false
   showPopup.value = false
   resetEggs()
 }
 
 const refusedMoreEggs = ()=> {
+  log("you didn't buy any eggs")
   resetGame()
+  displayPopup("I don't want to be around anymore...")
 }
 
 const nudeEggMessage = ()=> {
