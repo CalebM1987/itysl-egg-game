@@ -2,7 +2,7 @@
 npm run build
 set -e
 
-cp -r ./app ../../egg-game-live
+cp -r ./app ../egg-game-live
 
 git add -A
 git commit -m 'deploy'
