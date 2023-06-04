@@ -10,3 +10,8 @@ export type EggGuyMode =
 export type LegState = 
   | 'Up'
   | 'Down'
+
+export interface LocalStorageDevOverrides {
+  min: number;
+  max: number;
+}

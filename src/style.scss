@@ -10,8 +10,9 @@ body {
   width: 100vw;
   max-width: 100vw;
   margin: 0;
+  overflow-y: hidden;
   font-family: egg-font !important;
-  text-transform: capitalize !important;
+  text-transform: uppercase;
 }
 
 .egg-game-container * {
@@ -309,7 +310,7 @@ body {
   position: relative;
   font-family: egg-font, serif;
   font-weight: lighter;
-  font-size: 1vw
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) and (orientation: portrait) {
@@ -434,12 +435,12 @@ body {
 .popup-container .popup-body h2 {
   font-family: egg-font, serif;
   font-weight: lighter;
-  font-size: 1.5vw
+  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 768px) and (orientation: portrait) {
   .popup-container .popup-body h2 {
-    font-size: 4vw
+    font-size: 4vw;
   }
 }
 
