@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import { ref } from 'vue'
 </script>
 
 <template>
@@ -8,7 +7,7 @@
 
       <div class="popup-header"></div>
       <div class="popup-body">
-        <slot></slot>
+        <slot>6 EGGS</slot>
       </div>
     </div>
   </div>
@@ -16,6 +15,8 @@
 
 <style>
 .popup-body {
+  padding: 1rem;
   font-size: 1.5rem;
+  text-transform: none;
 }
 </style>
