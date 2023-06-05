@@ -2,10 +2,10 @@
 import { MouthState, LegState } from '@/types'
 import { ref, computed, onMounted, watch } from 'vue'
 import { gifAnimationDuration, delay, log } from '@/utils'
+import { useEggDrop } from '@/composables/egg-drop'
 import { useDropZone } from '@vueuse/core'
 
 const emit = defineEmits<{
-  'drop-egg': [];
   'started-winning-celebration': [];
   'started-walking': [];
   'stopped-waling': [];
@@ -18,7 +18,20 @@ interface Props {
   legState: LegState;
   eating?: boolean;
   celebrate?: boolean;
+  isDraggingTouch?: boolean;
 }
+
+const { 
+  legState='Down', 
+  eating=false, 
+  celebrate=false, 
+} = defineProps<Props>()
+
+const { 
+  isOverDrop,
+  waitForTouch,
+  stopDrag,
+} = useEggDrop()
 
 // defaults, but dynamically grab them on mounted
 const walkingTimeout = ref(5430)
@@ -26,8 +39,7 @@ const nudeTimeout = ref(8050)
 const shouldWalk = ref(false)
 const showEmNude = ref(false)
 const showButtFrame = ref(false)
-const dropZoneRef = ref()
-const { legState='Down', eating=false, celebrate=false } = defineProps<Props>()
+const dropZoneRef = ref(null)
 
 const mouthState = computed<MouthState>(()=> eating ? 'Closed': 'Open')
 
@@ -45,7 +57,7 @@ const imageSource = computed(()=> celebrate
 )
 
 const onDrop = ()=> {
-  emit('drop-egg')
+  stopDrag()
 }
 
 const showBareBackButtAndBalls = async ()=> {
@@ -83,12 +95,23 @@ watch(()=> celebrate,
   }
 )
 
+
 onMounted(()=> {
-  useDropZone(dropZoneRef.value, onDrop)
+  // wait for touch events on mobile
+  waitForTouch(dropZoneRef.value!)
+
+  const { isOverDropZone } = useDropZone(dropZoneRef.value, onDrop)
+  watch(()=> isOverDropZone,
+    (over)=> {
+      isOverDrop.value = over.value
+    }
+  )
+
   gifAnimationDuration(walkingGif).then(d => { 
     walkingTimeout.value = (d * 1000) - 50 
     log(`set walking gif timeout: ${d}`)
   })
+
   gifAnimationDuration(nudeGif).then(d => {
     nudeTimeout.value = (d * 1000) - 50
     log(`set nude gif timeout: ${d}`)
@@ -105,9 +128,13 @@ onMounted(()=> {
         'egg-guy-down': legState === 'Down', 
         'egg-guy-chewing': eating, 
         'egg-guy': legState === 'Up' && !eating 
-      }" 
+      }
+    " 
   >
-    <div class="egg-guy-img-wrapper" ref="dropZoneRef" @dragover.prevent>
+    <div 
+      class="egg-guy-img-wrapper" 
+      ref="dropZoneRef" 
+    >
       <img :src="imageSource" alt="" :class="celebrate ? 'walking-egg': ''">
     </div>
   </div>

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from 'vue'
+import { ref, defineAsyncComponent, onMounted } from 'vue'
 import { useEggs } from '@/composables/eggs';
 import { usePopups } from '@/composables/popup'
+import { useEggDrop } from '@/composables/egg-drop';
 import { randomNumber, speak, delay, log } from '@/utils';
 import { eggs } from '@/utils/easter-eggs'
 import EggGuy from '@/components/EggGuy.vue';
@@ -10,7 +11,6 @@ const Popup = defineAsyncComponent(()=> import('@/components/Popup.vue'));
 const VoiceMessage = defineAsyncComponent(()=> import('@/components/VoiceMessage.vue'));
 const OutOfEggs = defineAsyncComponent(()=> import('@/components/OutOfEggs.vue'));
 const GottaGive = defineAsyncComponent(()=> import('@/components/GottaGive.vue'));
-
 
 interface Props {
   shouldGive: boolean;
@@ -37,6 +37,10 @@ const {
   resetEggs,
   eatEgg
 } = useEggs()
+
+const { 
+  EventBus,
+} = useEggDrop()
 
 const resetGame = ()=> {
   isWinner.value = false
@@ -65,6 +69,14 @@ const buyMoreEggs = ()=> {
   eggCounter.value = 80
 }
 
+const onCancelDrag = ()=> {
+  showEgg.value = false
+}
+
+const onDragEgg = ()=> {
+  showEgg.value = true
+}
+
 const onEatEgg = ()=> {
   shouldEat.value = true
   showEgg.value = false
@@ -78,7 +90,6 @@ const onEatEgg = ()=> {
         disableFeed.value = true
         displayPopup('You now have 40 eggs').then(()=> disableFeed.value = false)
         log('that one egg was 40 eggs!?')
-      // } else if (eggCounter.value === 39){
         // make it more interesting to not automatically win at 39 eggs
       } else if (randomNumber(1,6) === 2 || eggCounter.value === 1){
         // win game
@@ -105,6 +116,14 @@ const onEatEgg = ()=> {
   }, 1000)
 }
 
+onMounted(()=> {
+  // handle all events globally
+  EventBus.on('drop-egg', onEatEgg)
+  EventBus.on('cancel-drag', onCancelDrag)
+  EventBus.on('drag-egg', onDragEgg)
+  EventBus.on('did-touch', ()=> log('is over egg man'))
+})
+
 // easter eggs
 if (localStorage.getItem('debug')){
   eggs.doTheVoice = displayPopup
@@ -126,7 +145,6 @@ if (localStorage.getItem('debug')){
               :celebrate="isWinner"
               :leg-state="(showEgg || shouldEat)? 'Up': 'Down'"
               :eating="shouldEat"
-              @drop-egg="onEatEgg"
               @showing-butt-frame="nudeEggMessage"
               @ended-winning-celebration="resetGame"
             />
@@ -135,8 +153,6 @@ if (localStorage.getItem('debug')){
             <egg-basket 
               :egg-count="eggCounter"
               :disabled="disableFeed"
-              @drag-egg="showEgg = true"
-              @cancel-drag="showEgg = false"
             />
           </div>
         </div>

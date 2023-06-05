@@ -101,3 +101,23 @@ export function checkForDevSettings(): LocalStorageDevOverrides {
   }
   return overrides
 }
+
+/**
+ * debounce a function
+ * 
+ * @see https://blog.webdevsimplified.com/2022-03/debounce-vs-throttle/
+ *  
+ * @param cb - the callback function
+ * @param delay - the time to delay in milliseconds
+ * @returns 
+ */
+export function debounce<F extends Function>(cb: F, delay = 250) {
+  let timeout: NodeJS.Timeout
+
+  return (...args: any[]) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      cb(...args)
+    }, delay)
+  }
+}

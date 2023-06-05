@@ -117,6 +117,7 @@ body {
 }
 
 .egg-game-container .egg-game-wrapper .egg-game-header {
+  touch-action: none !important;
   background: white;
   height: 5vh;
   width: 100%;
@@ -392,14 +393,14 @@ body {
 .popup-container {
   background: white;
   width: 40vw;
-  height: 25vh;
+  height: 32vh;
   border: .3vw solid black
 }
 
 @media screen and (max-width: 768px) and (orientation: portrait) {
   .popup-container {
     width: 70vw;
-    height: 22vh
+    height: 28vh
   }
 }
 
