@@ -27,6 +27,7 @@ const img = new Image(42, 59)
 img.src = singleEgg
 
 const onTouchStart = ()=> {
+  if (disabled) return;
   startDrag(true)
 }
 
@@ -45,6 +46,7 @@ const onDragStart = (evt: DragEvent | TouchEvent)=> {
 
 const onTouchEnd = ()=> {
   movingEggPosition.value = { display: 'none' }
+  if (disabled) return;
   stopDrag()
 }
 
@@ -71,7 +73,7 @@ onMounted(()=> {
       class="draggable-container" 
       @dragstart.stop="onDragStart"
       @touchstart.passive="onTouchStart"
-      @touchmove.passive="onMove"
+      @touchmove.passive="(e) => disabled ? null: onMove(e)"
       @touchend="onTouchEnd"
       @dragend="onDragEnd"
       @drop="onDragEnd"
