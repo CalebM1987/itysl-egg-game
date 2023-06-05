@@ -6,6 +6,12 @@ As a huge fan of [I think You Should Leave](https://www.netflix.com/title/809868
 
 I have also make my own tweaks to some of the logic. This version does not randomly popup Egg messages at random intervals, but rather on random number generators when an egg was eaten. This version is also a little more predictible and easier to win.
 
+### Live Version
+
+The live version of this app can be played here:
+
+[https://calebm1987.github.io/egg-game-live/](https://calebm1987.github.io/egg-game-live/)
+
 ## Original Sketch
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/K0OSfbPJFa4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -26,6 +32,7 @@ localStorage.setItem('egg-game', JSON.stringify({ min: 5, max: 11 }))
 
 The above example will ensure you get to the `Dude, you ran out of eggs...` message within 5-10 clicks (non-inclusive range).
 
+There are also some Easter "eggs" available in the dev tools...
 
 # Vue 3 + TypeScript + Vite
 
