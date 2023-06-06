@@ -26,6 +26,7 @@ const eggCounter = ref(0)
 const isWinner = ref(false)
 
 const { 
+  isBusy,
   showPopup,
   currentMessage,
   displayPopup
@@ -152,7 +153,7 @@ if (localStorage.getItem('debug')){
           <div class="egg-basket-container">
             <egg-basket 
               :egg-count="eggCounter"
-              :disabled="disableFeed"
+              :disabled="disableFeed || isBusy"
             />
           </div>
         </div>
